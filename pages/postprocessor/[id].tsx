@@ -3,10 +3,11 @@ import {useRouter} from "next/router";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import {useEffect, useState} from "react";
+import {Table} from "react-bootstrap";
+import {Card} from "@mui/material";
 
 import {calculateData, getConstructionsFromLocalStorage, xsCalc} from "../../utils";
 import {ConstructionQuery} from "../../types";
-import {Table} from "react-bootstrap";
 
 const Id = () => {
   const [constructions, setConstructions] = useState<ConstructionQuery[]>([]);
@@ -21,11 +22,6 @@ const Id = () => {
   useEffect(() => {
     setSelectedConstruction(constructions?.find(({name}) => name === id));
   }, [constructions])
-
-  // console.log('selectedConstruction', selectedConstruction)
-  // console.log('calc', calculateData(selectedConstruction?.construction))
-  // console.log('xsCalc', xsCalc(selectedConstruction?.construction.rodsData))
-  // console.log('delta', calculateData(selectedConstruction?.construction)?.delta)
 
   return (
     <>
@@ -48,7 +44,8 @@ const Id = () => {
       </header>
       <main className="p-4">
         {xsCalc(selectedConstruction?.construction.rodsData)?.map((xsArr, index) => (
-          <Table key={index}>
+          <Card key={index}>
+          <Table>
             <thead>
             <tr>
               <th>{`Стержень ${++index}`}</th>
@@ -73,11 +70,12 @@ const Id = () => {
             <tr>
               <td>σ</td>
               {calculateData(selectedConstruction?.construction)?.S?.[index]?.map((value) =>(
-                <td key={value}>{value}</td>
+                <td key={value} className={value <= (selectedConstruction?.construction?.rodsData?.[index]?.allowableVoltage as number) && value >= (-(selectedConstruction?.construction?.rodsData?.[index]?.allowableVoltage as number)) ?  `text-bg-success` : 'text-bg-danger'}>{value}</td>
               ))}
             </tr>
             </tbody>
           </Table>
+          </Card>
         ))}
 
       </main>

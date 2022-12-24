@@ -57,7 +57,7 @@ const aCalc = (rodsCount: number, leftLimit: boolean, rightLimit: boolean) => {
   for (let i = 0; i < rodsCount + 1; i++) {
     if (i === rodsCount) {
       AA[rodsCount][rodsCount] =
-        E[rodsCount - 1] * A[rodsCount - 1] / L[rodsCount - 1];
+        (E[rodsCount - 1] * A[rodsCount - 1]) / L[rodsCount - 1];
     } else {
       let k = (E[i] * A[i]) / L[i];
       AA[i][i] += k;
@@ -111,13 +111,11 @@ export const xsCalc = (rodsData?: Rod[]) => {
   );
 };
 
-const nCalc = (rod: Rod, delta: number[]) => {
-  let XS = [];
-  let N = [];
-  for (let i = 0; i < 11; i++) {
-    N[i] = 0;
-    XS[i] = 0;
-  }
+const nCalc = (rod: Rod, delta0: number, deltaL: number) => {
+  let XS = new Array(11);
+  let N = new Array(11);
+
+  console.log("rod", rod);
 
   for (let i = 0; i < 11; i++) {
     XS[i] = (i * Number(rod.rodLength)) / 10;
@@ -125,17 +123,17 @@ const nCalc = (rod: Rod, delta: number[]) => {
 
   for (let i = 0; i < N.length; i++) {
     N[i] = (
-      ((rod.elasticModulus * rod.crossSectionalArea) / rod.rodLength) *
-        (delta[1] - delta[0]) +
-      ((rod.linearLoad * rod.rodLength) / 2) *
-        (1 - 2 * (XS[i] / rod.rodLength))
+        ((rod.elasticModulus * rod.crossSectionalArea) / rod.rodLength) *
+        (deltaL - delta0) +
+      ((Number(rod.linearLoad )* Number(rod.rodLength)) / 2) *
+        (1 - 2 * (XS[i] / Number(rod.rodLength)))
     )?.toFixed(2);
   }
 
   return N;
 };
 
-const uCalc = (rod: Rod, delta: number[]) => {
+const uCalc = (rod: Rod, deltaO: number, deltaL: number) => {
   let XS = [];
   let U = [];
 
@@ -150,12 +148,12 @@ const uCalc = (rod: Rod, delta: number[]) => {
 
   for (let i = 0; i < 11; i++) {
     U[i] = (
-      (1 - XS[i] / Number(rod.rodLength)) * delta[0] +
-      (XS[i] / Number(rod.rodLength)) * delta[1] +
+      (1 - XS[i] / Number(rod.rodLength)) * deltaO +
+      (XS[i] / Number(rod.rodLength)) * deltaL +
       ((Number(rod.linearLoad) * Math.pow(Number(rod.rodLength), 2)) /
         (2 * Number(rod.elasticModulus) * Number(rod.crossSectionalArea))) *
-      (XS[i] / Number(rod.rodLength)) *
-      (1 - XS[i] / Number(rod.rodLength))
+        (XS[i] / Number(rod.rodLength)) *
+        (1 - XS[i] / Number(rod.rodLength))
     ).toFixed(2);
   }
 
@@ -176,7 +174,7 @@ const sCalc = (rod: Rod, N: number[]) => {
   }
 
   for (let i = 0; i < 11; i++) {
-    S[i] =( Number(N[i]) / Number(rod.crossSectionalArea)).toFixed(2);
+    S[i] = (Number(N[i]) / Number(rod.crossSectionalArea)).toFixed(2);
   }
 
   return S;
@@ -204,14 +202,14 @@ export const calculateData = (construction?: Construction) => {
       construction.leftLimit,
       construction.rightLimit
     );
-    console.log('AA', AA, )
+    console.log("AA", AA);
 
     const inverse = inv(AA);
     const delta = multiply([B], inverse);
 
-    const N = construction.rodsData.map((rod) => nCalc(rod, delta.flat()));
+    const N = construction.rodsData.map((rod, index) => nCalc(rod, delta.flat()[index], delta.flat()[index+1]));
 
-    const U = construction.rodsData.map((rod) => uCalc(rod, delta.flat()));
+    const U = construction.rodsData.map((rod, index) => uCalc(rod, delta.flat()[index], delta.flat()[index+1]));
 
     const S = construction.rodsData.map((rod, index) => sCalc(rod, N[index]));
 
