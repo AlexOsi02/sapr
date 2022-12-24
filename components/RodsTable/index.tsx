@@ -58,7 +58,7 @@ const RodsTable = ({
           <input
             className="form-check-input"
             type="checkbox"
-            value={isHaveSupports.supportLeft}
+            value={Number(isHaveSupports.supportLeft)}
             onChange={() =>
               setIsHaveSupports((prevState) => {
                 return {
@@ -75,7 +75,7 @@ const RodsTable = ({
           <input
             className="form-check-input"
             type="checkbox"
-            value={isHaveSupports.supportRight}
+            value={Number(isHaveSupports.supportRight)}
             onChange={() =>
               setIsHaveSupports((prevState) => {
                 return {

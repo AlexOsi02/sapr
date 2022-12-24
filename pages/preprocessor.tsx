@@ -258,36 +258,42 @@ const Preprocessor = () => {
             alt="supportLeftIcon"
             src={supportLeftIcon}
             style={{ display: "none" }}
+            priority
           />
           <Image
             id="supportRightIcon"
             alt="supportRightIcon"
             src={supportRightIcon}
             style={{ display: "none" }}
+            priority
           />
           <Image
             id="arrowLeft"
             alt="arrowLeft"
             src={arrowLeft}
             style={{ display: "none" }}
+            priority
           />
           <Image
             id="arrowRight"
             alt="arrowRight"
             src={arrowRight}
             style={{ display: "none" }}
+            priority
           />
           <Image
             id="arrowLongRight"
             alt="arrowLongRight"
             src={arrowLongRight}
             style={{ display: "none" }}
+            priority
           />
           <Image
             id="arrowLongLeft"
             alt="arrowLongLeft"
             src={arrowLongLeft}
             style={{ display: "none" }}
+            priority
           />
 
           <canvas id="canvas" height="0"></canvas>

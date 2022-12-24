@@ -24,3 +24,14 @@ export interface HaveSupportsState {
   isHaveSupports: Supports;
   setIsHaveSupports: Dispatch<SetStateAction<Supports>>;
 }
+
+export interface Construction {
+  leftLimit: boolean;
+  rightLimit: boolean;
+  rodsData: Rod[]
+}
+
+export interface ConstructionQuery {
+  name: string;
+  construction: Construction;
+}
