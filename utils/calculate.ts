@@ -9,7 +9,7 @@ let E: number[] = [];
 let A: number[] = [];
 
 const bCalc = (rodsCount: number, leftLimit: boolean, rightLimit: boolean) => {
-  const b: number[] = [];
+  const b:any[] = [];
 
   for (let i = 0; i < rodsCount + 1; i++) {
     b[i] = [];
@@ -42,7 +42,7 @@ const bCalc = (rodsCount: number, leftLimit: boolean, rightLimit: boolean) => {
 };
 
 const aCalc = (rodsCount: number, leftLimit: boolean, rightLimit: boolean) => {
-  let AA = [];
+  let AA:any[] = [];
 
   for (let i = 0; i < rodsCount + 1; i++) {
     AA[i] = [];
